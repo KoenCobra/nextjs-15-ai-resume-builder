@@ -1,7 +1,7 @@
 import React from "react";
 
 const Resumes = () => {
-  return <main>Resumes</main>;
+  return <main></main>;
 };
 
 export default Resumes;
