@@ -7,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Editor = () => {
-  return (
-    <div>
-      <ResumeEditor />
-    </div>
-  );
+  return <ResumeEditor />;
 };
 
 export default Editor;
