@@ -4,12 +4,13 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PersonalInfoValues, personalInfoSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { Form, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 const PersonalInfoForm = () => {
   const form = useForm<PersonalInfoValues>({
@@ -24,6 +25,16 @@ const PersonalInfoForm = () => {
       email: "",
     },
   });
+
+  useEffect(() => {
+    const { unsubscribe } = form.watch(async () => {
+      const isValid = await form.trigger();
+      if (!isValid) return;
+      //update resume data
+    });
+    return unsubscribe;
+  }, [form]);
+
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
