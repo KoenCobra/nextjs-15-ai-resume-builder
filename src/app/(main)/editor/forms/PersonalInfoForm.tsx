@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   FormField,
   FormItem,
@@ -10,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "@/lib/types";
 import { PersonalInfoValues, personalInfoSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
@@ -36,6 +37,8 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
@@ -60,10 +63,10 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                         const file = e.target.files?.[0];
                         fieldValues.onChange(file);
                       }}
-                      // ref={photoInputRef}
+                      ref={photoInputRef}
                     />
                   </FormControl>
-                  {/* <Button
+                  <Button
                     variant="secondary"
                     type="button"
                     onClick={() => {
@@ -74,7 +77,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                     }}
                   >
                     Remove
-                  </Button> */}
+                  </Button>
                 </div>
                 <FormMessage />
               </FormItem>
