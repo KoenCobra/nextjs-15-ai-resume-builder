@@ -115,3 +115,11 @@ export const generateSummarySchema = z.object({
 });
 
 export type GenerateSummaryInput = z.infer<typeof generateSummarySchema>;
+
+export const WorkExperience = z.object({
+  position: z.string(),
+  company: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
+  description: z.string(),
+});
