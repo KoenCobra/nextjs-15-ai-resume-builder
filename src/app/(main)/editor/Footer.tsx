@@ -1,30 +1,41 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
-import React from "react";
+import { cn } from "@/lib/utils";
+import { FileUserIcon, PenLineIcon } from "lucide-react";
+import Link from "next/link";
 import { steps } from "./steps";
 
 interface FooterProps {
   currentStep: string;
   setCurrentStep: (step: string) => void;
+  showSmResumePreview: boolean;
+  setShowSmResumePreview: (show: boolean) => void;
+  isSaving: boolean;
 }
 
-const Footer = ({ currentStep, setCurrentStep }: FooterProps) => {
-  const currentIndex = steps.findIndex((step) => step.key === currentStep);
+export default function Footer({
+  currentStep,
+  setCurrentStep,
+  showSmResumePreview,
+  setShowSmResumePreview,
+  isSaving,
+}: FooterProps) {
+  const previousStep = steps.find(
+    (_, index) => steps[index + 1]?.key === currentStep,
+  )?.key;
 
-  const previousStep =
-    currentIndex > 0 ? steps[currentIndex - 1].key : undefined;
-  const nextStep =
-    currentIndex < steps.length - 1 ? steps[currentIndex + 1].key : undefined;
+  const nextStep = steps.find(
+    (_, index) => steps[index - 1]?.key === currentStep,
+  )?.key;
 
   return (
     <footer className="w-full border-t px-3 py-5">
       <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
         <div className="flex items-center gap-3">
           <Button
+            variant="secondary"
             onClick={
               previousStep ? () => setCurrentStep(previousStep) : undefined
             }
-            variant="secondary"
             disabled={!previousStep}
           >
             Previous step
@@ -36,15 +47,31 @@ const Footer = ({ currentStep, setCurrentStep }: FooterProps) => {
             Next step
           </Button>
         </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setShowSmResumePreview(!showSmResumePreview)}
+          className="md:hidden"
+          title={
+            showSmResumePreview ? "Show input form" : "Show resume preview"
+          }
+        >
+          {showSmResumePreview ? <PenLineIcon /> : <FileUserIcon />}
+        </Button>
         <div className="flex items-center gap-3">
-          <Link href="/resumes">
-            <Button variant="secondary">Close</Button>
-          </Link>
-          <p className="text-muted-foreground opacity-0">Saving...</p>
+          <Button variant="secondary" asChild>
+            <Link href="/resumes">Close</Link>
+          </Button>
+          <p
+            className={cn(
+              "text-muted-foreground opacity-0",
+              isSaving && "opacity-100",
+            )}
+          >
+            Saving...
+          </p>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
