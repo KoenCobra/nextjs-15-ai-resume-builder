@@ -1,28 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import useUnloadWarning from "@/hooks/useUnloadWarning";
+import { ResumeServerData } from "@/lib/types";
+import { cn, mapToResumeValues } from "@/lib/utils";
+import { ResumeValues } from "@/lib/validation";
 import { useSearchParams } from "next/navigation";
-import { steps } from "./steps";
+import { useState } from "react";
 import Breadcrumbs from "./Breadcrumbs";
 import Footer from "./Footer";
-import { ResumeValues } from "@/lib/validation";
 import ResumePreviewSection from "./ResumePreviewSection";
-import { cn } from "@/lib/utils";
+import { steps } from "./steps";
+import useAutoSaveResume from "./useAutoSaveResume";
 
-const ResumeEditor = () => {
+interface ResumeEditorProps {
+  resumeToEdit: ResumeServerData | null;
+}
+
+export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
   const searchParams = useSearchParams();
 
-  const [resumeData, setResumeData] = useState<ResumeValues>({});
+  const [resumeData, setResumeData] = useState<ResumeValues>(
+    resumeToEdit ? mapToResumeValues(resumeToEdit) : {},
+  );
 
   const [showSmResumePreview, setShowSmResumePreview] = useState(false);
 
+  const { isSaving, hasUnsavedChanges } = useAutoSaveResume(resumeData);
+
+  useUnloadWarning(hasUnsavedChanges);
+
   const currentStep = searchParams.get("step") || steps[0].key;
 
-  const setStep = (key: string) => {
+  function setStep(key: string) {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("step", key);
     window.history.pushState(null, "", `?${newSearchParams.toString()}`);
-  };
+  }
 
   const FormComponent = steps.find(
     (step) => step.key === currentStep,
@@ -31,9 +44,9 @@ const ResumeEditor = () => {
   return (
     <div className="flex grow flex-col">
       <header className="space-y-1.5 border-b px-3 py-5 text-center">
-        <h1 className="text-2xl font-bold">Design Your Resume</h1>
+        <h1 className="text-2xl font-bold">Design your resume</h1>
         <p className="text-sm text-muted-foreground">
-          Follow the steps below to creata your resume. Your progress will be
+          Follow the steps below to create your resume. Your progress will be
           saved automatically.
         </p>
       </header>
@@ -66,9 +79,8 @@ const ResumeEditor = () => {
         setCurrentStep={setStep}
         showSmResumePreview={showSmResumePreview}
         setShowSmResumePreview={setShowSmResumePreview}
+        isSaving={isSaving}
       />
     </div>
   );
-};
-
-export default ResumeEditor;
+}

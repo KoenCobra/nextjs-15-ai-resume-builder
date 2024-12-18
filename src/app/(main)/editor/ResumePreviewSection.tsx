@@ -1,9 +1,8 @@
 import ResumePreview from "@/components/ResumePreview";
-import { ResumeValues } from "@/lib/validation";
-import React from "react";
-import ColorPicker from "./ColorPicker";
-import BorderStyleButton from "./BorderStyleButton";
 import { cn } from "@/lib/utils";
+import { ResumeValues } from "@/lib/validation";
+import BorderStyleButton from "./BorderStyleButton";
+import ColorPicker from "./ColorPicker";
 
 interface ResumePreviewSectionProps {
   resumeData: ResumeValues;
@@ -11,11 +10,11 @@ interface ResumePreviewSectionProps {
   className?: string;
 }
 
-const ResumePreviewSection = ({
+export default function ResumePreviewSection({
   resumeData,
   setResumeData,
   className,
-}: ResumePreviewSectionProps) => {
+}: ResumePreviewSectionProps) {
   return (
     <div
       className={cn("group relative hidden w-full md:flex md:w-1/2", className)}
@@ -42,6 +41,4 @@ const ResumePreviewSection = ({
       </div>
     </div>
   );
-};
-
-export default ResumePreviewSection;
+}
