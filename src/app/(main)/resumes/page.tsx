@@ -5,6 +5,7 @@ import { resumeDataInclude } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import ResumeItem from "./ResumeItem";
+import CreateResumeButton from "./CreateResumeButton";
 // import CreateResumeButton from "./CreateResumeButton";
 // import ResumeItem from "./ResumeItem";
 
@@ -39,9 +40,7 @@ export default async function Page() {
 
   return (
     <main className="mx-auto w-full max-w-7xl space-y-6 px-3 py-6">
-      {/* <CreateResumeButton
-        canCreate={canCreateResume(subscriptionLevel, totalCount)}
-      /> */}
+      <CreateResumeButton canCreate={totalCount < 3} />
       <div className="space-y-1">
         <h1 className="text-3xl font-bold">Your resumes</h1>
         <p>Total: {totalCount}</p>
