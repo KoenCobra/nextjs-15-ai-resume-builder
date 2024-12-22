@@ -2,8 +2,9 @@
 
 import openai from "@/lib/openai";
 import { zodResponseFormat } from "openai/helpers/zod";
-// import { canUseAITools } from "@/lib/permissions";
-// import { getUserSubscriptionLevel } from "@/lib/subscription";
+import { canUseAITools } from "@/lib/permissions";
+import { getUserSubscriptionLevel } from "@/lib/subscription";
+
 import {
   GenerateSummaryInput,
   generateSummarySchema,
@@ -20,11 +21,11 @@ export async function generateSummary(input: GenerateSummaryInput) {
     throw new Error("Unauthorized");
   }
 
-  // const subscriptionLevel = await getUserSubscriptionLevel(userId);
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
 
-  // if (!canUseAITools(subscriptionLevel)) {
-  //   throw new Error("Upgrade your subscription to use this feature");
-  // }
+  if (!canUseAITools(subscriptionLevel)) {
+    throw new Error("Upgrade your subscription to use this feature");
+  }
 
   const { jobTitle, workExperiences, educations, skills } =
     generateSummarySchema.parse(input);
@@ -99,11 +100,11 @@ export async function generateWorkExperience(
     throw new Error("Unauthorized");
   }
 
-  // const subscriptionLevel = await getUserSubscriptionLevel(userId);
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
 
-  // if (!canUseAITools(subscriptionLevel)) {
-  //   throw new Error("Upgrade your subscription to use this feature");
-  // }
+  if (!canUseAITools(subscriptionLevel)) {
+    throw new Error("Upgrade your subscription to use this feature");
+  }
 
   const { description } = generateWorkExperienceSchema.parse(input);
 
