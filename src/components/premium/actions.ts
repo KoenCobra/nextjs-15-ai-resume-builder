@@ -20,12 +20,9 @@ export async function createCheckoutSession(priceId: string) {
     mode: "subscription",
     success_url: new URL(
       "/billing/success",
-      process.env.NEXT_PUBLIC_BASE_URL,
+      env.NEXT_PUBLIC_BASE_URL,
     ).toString(),
-    cancel_url: new URL(
-      "/billing",
-      process.env.NEXT_PUBLIC_BASE_URL,
-    ).toString(),
+    cancel_url: new URL("/billing", env.NEXT_PUBLIC_BASE_URL).toString(),
     customer: stripeCustomerId,
     customer_email: stripeCustomerId
       ? undefined
